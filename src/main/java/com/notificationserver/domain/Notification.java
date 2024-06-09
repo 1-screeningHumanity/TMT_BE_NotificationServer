@@ -1,5 +1,7 @@
 package com.notificationserver.domain;
 
+import com.notificationserver.application.port.in.dto.SaveNotificationLogInDto;
+import com.notificationserver.domain.enums.NotificationStatus;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,13 +14,19 @@ public class Notification {
 	private String uuid;
 	private LocalDateTime notificationCreateAt;
 	private String content;
-	// todo enum 관리
-	private String notificationStatus;
+	private String title;
+	private NotificationStatus notificationStatus;
 	private Integer readStatus;
 	private LocalDateTime notificationLogCreateAt;
 
-	public static void sendAlarm() {
-		// todo 알림 전송
-
+	public static Notification sendAlarm(String fcmToken, SaveNotificationLogInDto dto) {
+		return Notification.builder()
+				.fcmToken(fcmToken)
+				.content(dto.getContent())
+				.title(dto.getTitle())
+				.readStatus(dto.getReadStatus())
+				.notificationStatus(dto.getNotificationStatus())
+				.notificationLogCreateAt(dto.getNotificationLogCreateAt())
+				.build();
 	}
 }
