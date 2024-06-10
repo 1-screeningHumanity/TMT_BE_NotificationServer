@@ -8,6 +8,7 @@ import com.notificationserver.application.port.in.dto.SaveNotificationLogInDto;
 import com.notificationserver.application.port.in.usecase.NotificationUseCase;
 import com.notificationserver.application.port.out.LoadNotificationPort;
 import com.notificationserver.application.port.out.SaveNotificationPort;
+import com.notificationserver.application.port.out.dto.ReadNotificationLogOutDto;
 import com.notificationserver.application.port.out.dto.SaveNotificationLogOutDto;
 import com.notificationserver.application.port.out.dto.SaveNotificationOutDto;
 import com.notificationserver.domain.Notification;
@@ -41,6 +42,18 @@ public class NotificationService implements NotificationUseCase {
 	public void saveFcmTokenByUuid(SaveNotificationInDto dto) {
 		saveNotificationPort.saveFcmTokenByUuid(
 				SaveNotificationOutDto.getSaveNotificationInDto(dto));
+	}
+
+	@Override
+	public void readAlarm(List<Long> notificationLogIds, String uuid) {
+
+
+		notificationLogIds.forEach(notificationLogId -> {
+
+			Notification notification = Notification.readAlarm(notificationLogId);
+
+			saveNotificationPort.updateNotificationLogReadStatus(uuid, ReadNotificationLogOutDto.getNoticaiton(notification));
+		});
 	}
 
 	// fcm 으로 알림 보내기

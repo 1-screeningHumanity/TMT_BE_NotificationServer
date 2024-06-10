@@ -10,6 +10,7 @@ import lombok.Getter;
 @Builder
 public class Notification {
 
+	private Long notificationLogId;
 	private String fcmToken;
 	private String uuid;
 	private LocalDateTime notificationCreateAt;
@@ -29,4 +30,12 @@ public class Notification {
 				.notificationLogCreateAt(dto.getNotificationLogCreateAt())
 				.build();
 	}
+
+	public static Notification readAlarm(Long notificationLogId) {
+		return Notification.builder()
+				.notificationLogId(notificationLogId)
+				.readStatus(77)
+				.build();
+	}
+
 }

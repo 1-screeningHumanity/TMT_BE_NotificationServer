@@ -1,6 +1,7 @@
 package com.notificationserver.adaptor.in.web.controller;
 
 import com.notificationserver.adaptor.in.web.vo.FcmTokenVo;
+import com.notificationserver.adaptor.in.web.vo.NotificationIdsVo;
 import com.notificationserver.application.port.in.dto.SaveNotificationInDto;
 import com.notificationserver.application.port.in.usecase.NotificationUseCase;
 import com.notificationserver.global.common.response.BaseResponse;
@@ -30,6 +31,18 @@ public class NotificationController {
 		String uuid = decodingToken.getUuid(accessToken);
 
 		notificationUseCase.saveFcmTokenByUuid(SaveNotificationInDto.of(vo.getFcmToken(), uuid));
+
+		return new BaseResponse<>();
+	}
+
+	@PostMapping("/notification/read")
+	public BaseResponse<Void> readAlarm(
+			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+			@RequestBody NotificationIdsVo vo) {
+
+		String uuid = decodingToken.getUuid(accessToken);
+
+		notificationUseCase.readAlarm(vo.getNotificationIds(), uuid);
 
 		return new BaseResponse<>();
 	}

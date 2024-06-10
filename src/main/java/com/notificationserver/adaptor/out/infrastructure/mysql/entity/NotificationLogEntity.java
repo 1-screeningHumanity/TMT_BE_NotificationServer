@@ -62,4 +62,16 @@ public class NotificationLogEntity {
 				.notificationLogCreateAt(saveNotificationLogOutDto.getNotificationLogCreateAt())
 				.build();
 	}
+
+	public static NotificationLogEntity updateReadStatus(NotificationLogEntity notificationLogEntity, Integer readStatus) {
+		return NotificationLogEntity.builder()
+				.id(notificationLogEntity.getId())
+				.notification(notificationLogEntity.getNotification())
+				.title(notificationLogEntity.getTitle())
+				.content(notificationLogEntity.getContent())
+				.notificationStatus(notificationLogEntity.getNotificationStatus())
+				.readStatus(readStatus)
+				.notificationLogCreateAt(notificationLogEntity.getNotificationLogCreateAt())
+				.build();
+	}
 }
