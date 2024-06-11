@@ -1,8 +1,10 @@
 package com.notificationserver.domain;
 
 import com.notificationserver.application.port.in.dto.SaveNotificationLogInDto;
+import com.notificationserver.application.port.out.dto.LoadNotificationLogOutDto;
 import com.notificationserver.domain.enums.NotificationStatus;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -36,6 +38,20 @@ public class Notification {
 				.notificationLogId(notificationLogId)
 				.readStatus(77)
 				.build();
+	}
+
+	public static List<Notification> getAlarm(List<LoadNotificationLogOutDto> dtos) {
+		return dtos.stream()
+				.map(dto ->
+						Notification.builder()
+								.notificationLogId(dto.getNotificationLogId())
+								.title(dto.getTitle())
+								.content(dto.getContent())
+								.notificationStatus(dto.getNotificationStatus())
+								.readStatus(dto.getReadStatus())
+								.notificationLogCreateAt(dto.getNotificationLogCreateAt())
+								.build())
+				.toList();
 	}
 
 }

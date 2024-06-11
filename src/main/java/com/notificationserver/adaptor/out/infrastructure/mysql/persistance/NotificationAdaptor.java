@@ -6,6 +6,7 @@ import com.notificationserver.adaptor.out.infrastructure.mysql.repository.Notifi
 import com.notificationserver.adaptor.out.infrastructure.mysql.repository.NotificationLogJpaRepository;
 import com.notificationserver.application.port.out.LoadNotificationPort;
 import com.notificationserver.application.port.out.SaveNotificationPort;
+import com.notificationserver.application.port.out.dto.LoadNotificationLogOutDto;
 import com.notificationserver.application.port.out.dto.ReadNotificationLogOutDto;
 import com.notificationserver.application.port.out.dto.SaveNotificationLogOutDto;
 import com.notificationserver.application.port.out.dto.SaveNotificationOutDto;
@@ -64,5 +65,21 @@ public class NotificationAdaptor implements SaveNotificationPort, LoadNotificati
 	@Transactional(readOnly = true)
 	public List<String> getFcmTokenByUuid(String uuid) {
 		return notificationJpaRepository.findFcmTokensByUuid(uuid);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<LoadNotificationLogOutDto> getNotificationLogByUuid(String uuid) {
+		return notificationLogJpaRepository.findNotificationLogByUuid(uuid)
+				.stream()
+				.map(notificationLogEntity -> LoadNotificationLogOutDto.builder()
+						.notificationLogId(notificationLogEntity.getId())
+						.content(notificationLogEntity.getContent())
+						.title(notificationLogEntity.getTitle())
+						.notificationStatus(notificationLogEntity.getNotificationStatus())
+						.readStatus(notificationLogEntity.getReadStatus())
+						.notificationLogCreateAt(notificationLogEntity.getNotificationLogCreateAt())
+						.build())
+				.toList();
 	}
 }

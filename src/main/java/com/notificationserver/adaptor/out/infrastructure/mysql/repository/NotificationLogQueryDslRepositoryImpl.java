@@ -6,6 +6,7 @@ import static com.notificationserver.adaptor.out.infrastructure.mysql.entity.QNo
 
 import com.notificationserver.adaptor.out.infrastructure.mysql.entity.NotificationLogEntity;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -26,4 +27,16 @@ public class NotificationLogQueryDslRepositoryImpl implements NotificationLogQue
 						notificationLogEntity.id.eq(notificationLogId))
 				.fetchOne());
 	}
+
+	@Override
+	public List<NotificationLogEntity> findNotificationLogByUuid(String uuid) {
+		return jpaQueryFactory.selectFrom(notificationLogEntity)
+				.leftJoin(notificationEntity)
+				.on(notificationEntity.id.eq(notificationLogEntity.notification.id))
+				.fetchJoin()
+				.where(notificationEntity.uuid.eq(uuid))
+				.fetch();
+	}
+
+
 }
