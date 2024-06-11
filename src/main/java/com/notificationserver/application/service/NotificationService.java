@@ -51,7 +51,8 @@ public class NotificationService implements NotificationUseCase {
 
 			Notification notification = Notification.readAlarm(notificationLogId);
 
-			saveNotificationPort.updateNotificationLogReadStatus(uuid, ReadNotificationLogOutDto.getNoticaiton(notification));
+			saveNotificationPort.updateNotificationLogReadStatus(uuid,
+					ReadNotificationLogOutDto.getNoticaiton(notification));
 		});
 	}
 
@@ -62,6 +63,12 @@ public class NotificationService implements NotificationUseCase {
 				.map(LoadNotificationLogInDto::getNotification)
 				.toList();
 
+	}
+
+	@Override
+	public void deleteAlarms(List<Long> notificationLogIds, String uuid) {
+		saveNotificationPort.deleteNotificationLogsByIdsAndUuid(
+				Notification.deleteAlarms(notificationLogIds), uuid);
 	}
 
 

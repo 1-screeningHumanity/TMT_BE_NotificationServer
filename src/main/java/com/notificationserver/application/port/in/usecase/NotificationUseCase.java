@@ -13,4 +13,6 @@ public interface NotificationUseCase {
 	void readAlarm(List<Long> notificationLogIds, String uuid);
 
 	List<LoadNotificationLogInDto> getAlarm(String uuid);
+
+	void deleteAlarms(List<Long> notificationLogIds, String uuid);
 }
