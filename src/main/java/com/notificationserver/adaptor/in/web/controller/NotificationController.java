@@ -3,6 +3,7 @@ package com.notificationserver.adaptor.in.web.controller;
 import com.notificationserver.adaptor.in.web.vo.FcmTokenVo;
 import com.notificationserver.adaptor.in.web.vo.LoadNotificationLogVo;
 import com.notificationserver.adaptor.in.web.vo.NotificationIdsVo;
+import com.notificationserver.adaptor.in.web.vo.NotificationLogCountVo;
 import com.notificationserver.application.port.in.dto.SaveNotificationInDto;
 import com.notificationserver.application.port.in.usecase.NotificationUseCase;
 import com.notificationserver.global.common.response.BaseResponse;
@@ -74,5 +75,15 @@ public class NotificationController {
 		notificationUseCase.deleteAlarms(vo.getNotificationIds(), uuid);
 
 		return new BaseResponse<>();
+	}
+
+	@GetMapping("/notification/count")
+	public BaseResponse<NotificationLogCountVo> getAlarmCount(
+			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+
+		String uuid = decodingToken.getUuid(accessToken);
+
+		return new BaseResponse<>(NotificationLogCountVo.getNotificationLogInDto(
+				notificationUseCase.getAlarmCount(uuid)));
 	}
 }
