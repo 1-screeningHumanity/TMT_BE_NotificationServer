@@ -19,13 +19,13 @@ public class SaveNotificationLogInDto {
 	private LocalDateTime notificationLogCreateAt;
 
 	@Builder
-	public static SaveNotificationLogInDto createNotificationLogInDto(String title, String content, NotificationStatus notificationStatus) {
+	public static SaveNotificationLogInDto createNotificationLogInDto(String title, String content, LocalDateTime notificationLogCreateAt, NotificationStatus notificationStatus){
 		return SaveNotificationLogInDto.builder()
 				.title(title)
 				.content(content)
 				.notificationStatus(notificationStatus)
 				.readStatus(44)
-				.notificationLogCreateAt(LocalDateTime.now())
+				.notificationLogCreateAt(notificationLogCreateAt)
 				.build();
 	}
 }
