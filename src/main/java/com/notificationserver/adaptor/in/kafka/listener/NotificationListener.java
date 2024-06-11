@@ -7,6 +7,8 @@ import com.notificationserver.adaptor.in.kafka.vo.NotificationInfoVo;
 import com.notificationserver.application.port.in.dto.SaveNotificationLogInDto;
 import com.notificationserver.application.port.in.usecase.NotificationUseCase;
 import com.notificationserver.domain.enums.NotificationStatus;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -27,9 +29,18 @@ public class NotificationListener {
 			NotificationInfoVo vo = mapper.readValue(kafkaMessage, new TypeReference<>() {
 			});
 
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
+					"yyyy-MM-dd'T'HH:mm:ss.nnnnnnnnn");
+
+			LocalDateTime notificationLogTime = LocalDateTime.parse(vo.getNotificationLogTime(),
+					formatter);
+
 			notificationUseCase.sendAlarm(
 					vo.getUuid(),
-					SaveNotificationLogInDto.createNotificationLogInDto(vo.getTitle(), vo.getBody(),
+					SaveNotificationLogInDto.createNotificationLogInDto(
+							vo.getTitle(),
+							vo.getBody(),
+							notificationLogTime,
 							NotificationStatus.TRADE));
 
 		} catch (JsonProcessingException e) {
