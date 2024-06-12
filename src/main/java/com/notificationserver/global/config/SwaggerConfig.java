@@ -45,7 +45,7 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("default Service 테스트")
+                .title("Notification Service 테스트")
                 .description("Springdoc을 사용한 Swagger UI 테스트")
                 .version("1.0.0");
     }
@@ -62,8 +62,8 @@ public class SwaggerConfig {
         localServer.setDescription("Local Test Server URL");
 
         Server dynamicServer = new Server();
-        dynamicServer.setUrl("https://{domain}");
-        dynamicServer.setDescription("Server URL");
+        dynamicServer.setUrl("https://screeninghumanity.shop/api/v1/notification");
+        dynamicServer.setDescription("");
 
         servers.add(localServer);
         servers.add(dynamicServer);
