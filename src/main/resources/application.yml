@@ -34,7 +34,7 @@ eureka:
       defaultZone: ${EUREKA_URl}
 
 springdoc:
-  packages-to-scan: ScreeningHumanity.TradeServer
+  packages-to-scan: com.notificationserver
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
