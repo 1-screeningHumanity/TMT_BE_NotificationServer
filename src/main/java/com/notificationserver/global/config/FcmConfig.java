@@ -20,7 +20,7 @@ public class FcmConfig {
 	@Bean
 	FirebaseMessaging firebaseMessaging() throws IOException {
 		GoogleCredentials googleCredentials = GoogleCredentials.
-				fromStream(new ClassPathResource("fcmStockProjectKey.json").getInputStream());
+				fromStream(new ClassPathResource(fcmConfigUrl).getInputStream());
 
 		FirebaseOptions firebaseOptions = FirebaseOptions.builder()
 				.setCredentials(googleCredentials)
