@@ -62,6 +62,12 @@ public class NotificationAdaptor implements SaveNotificationPort, LoadNotificati
 	}
 
 	@Override
+	@Transactional
+	public void deleteNotificationLogsByIdsAndUuid(List<Long> notificationLogIds, String uuid) {
+		notificationLogJpaRepository.deleteNotificationLogsByIdsAndUuid(notificationLogIds, uuid);
+	}
+
+	@Override
 	@Transactional(readOnly = true)
 	public List<String> getFcmTokenByUuid(String uuid) {
 		return notificationJpaRepository.findFcmTokensByUuid(uuid);

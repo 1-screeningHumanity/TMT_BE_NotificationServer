@@ -38,5 +38,13 @@ public class NotificationLogQueryDslRepositoryImpl implements NotificationLogQue
 				.fetch();
 	}
 
+	@Override
+	public void deleteNotificationLogsByIdsAndUuid(List<Long> notificationLogIds, String uuid) {
+		jpaQueryFactory.delete(notificationLogEntity)
+				.where(notificationLogEntity.notification.uuid.eq(uuid)
+						.and(notificationLogEntity.id.in(notificationLogIds)))
+				.execute();
+	}
+
 
 }

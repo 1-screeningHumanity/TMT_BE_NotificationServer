@@ -4,6 +4,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.notificationserver.application.port.in.dto.LoadNotificationLogInDto;
+import com.notificationserver.application.port.in.dto.NotificationLogCountInDto;
 import com.notificationserver.application.port.in.dto.SaveNotificationInDto;
 import com.notificationserver.application.port.in.dto.SaveNotificationLogInDto;
 import com.notificationserver.application.port.in.usecase.NotificationUseCase;
@@ -51,7 +52,8 @@ public class NotificationService implements NotificationUseCase {
 
 			Notification notification = Notification.readAlarm(notificationLogId);
 
-			saveNotificationPort.updateNotificationLogReadStatus(uuid, ReadNotificationLogOutDto.getNoticaiton(notification));
+			saveNotificationPort.updateNotificationLogReadStatus(uuid,
+					ReadNotificationLogOutDto.getNoticaiton(notification));
 		});
 	}
 
@@ -62,6 +64,18 @@ public class NotificationService implements NotificationUseCase {
 				.map(LoadNotificationLogInDto::getNotification)
 				.toList();
 
+	}
+
+	@Override
+	public NotificationLogCountInDto getAlarmCount(String uuid) {
+		return NotificationLogCountInDto.getCount(
+				loadNotificationPort.getNotificationLogByUuid(uuid).size());
+	}
+
+	@Override
+	public void deleteAlarms(List<Long> notificationLogIds, String uuid) {
+		saveNotificationPort.deleteNotificationLogsByIdsAndUuid(
+				Notification.deleteAlarms(notificationLogIds), uuid);
 	}
 
 

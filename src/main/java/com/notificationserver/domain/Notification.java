@@ -54,4 +54,8 @@ public class Notification {
 				.toList();
 	}
 
+	public static List<Long> deleteAlarms(List<Long> notificationLogIds) {
+		return notificationLogIds;
+	}
+
 }

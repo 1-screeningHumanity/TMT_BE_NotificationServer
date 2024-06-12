@@ -3,6 +3,7 @@ package com.notificationserver.adaptor.in.web.controller;
 import com.notificationserver.adaptor.in.web.vo.FcmTokenVo;
 import com.notificationserver.adaptor.in.web.vo.LoadNotificationLogVo;
 import com.notificationserver.adaptor.in.web.vo.NotificationIdsVo;
+import com.notificationserver.adaptor.in.web.vo.NotificationLogCountVo;
 import com.notificationserver.application.port.in.dto.SaveNotificationInDto;
 import com.notificationserver.application.port.in.usecase.NotificationUseCase;
 import com.notificationserver.global.common.response.BaseResponse;
@@ -11,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,5 +63,27 @@ public class NotificationController {
 				.stream()
 				.map(LoadNotificationLogVo::getLoadNotificationLogInDto)
 				.toList());
+	}
+
+	@DeleteMapping("/notification")
+	public BaseResponse<Void> deleteAlarms(
+			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+			@RequestBody NotificationIdsVo vo) {
+
+		String uuid = decodingToken.getUuid(accessToken);
+
+		notificationUseCase.deleteAlarms(vo.getNotificationIds(), uuid);
+
+		return new BaseResponse<>();
+	}
+
+	@GetMapping("/notification/count")
+	public BaseResponse<NotificationLogCountVo> getAlarmCount(
+			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+
+		String uuid = decodingToken.getUuid(accessToken);
+
+		return new BaseResponse<>(NotificationLogCountVo.getNotificationLogInDto(
+				notificationUseCase.getAlarmCount(uuid)));
 	}
 }
