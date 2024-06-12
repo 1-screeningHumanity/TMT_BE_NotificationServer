@@ -11,6 +11,12 @@ import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 public class FcmConfig {
+
+	//로컬 환경
+//	String fcmConfigUrl = "fcmStockProjectKey.json";
+	//배포 환경
+	String fcmConfigUrl = "/app/resources/fcmStockProjectKey.json";
+
 	@Bean
 	FirebaseMessaging firebaseMessaging() throws IOException {
 		GoogleCredentials googleCredentials = GoogleCredentials.
