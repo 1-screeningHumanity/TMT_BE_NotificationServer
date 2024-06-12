@@ -9,4 +9,6 @@ public interface NotificationLogQueryDslRepository {
 	Optional<NotificationLogEntity> findNotificationLogByUuidAndId(String uuid, Long notificationLogId);
 
 	List<NotificationLogEntity> findNotificationLogByUuid(String uuid);
+
+	void deleteNotificationLogsByIdsAndUuid(List<Long> notificationLogIds, String uuid);
 }
