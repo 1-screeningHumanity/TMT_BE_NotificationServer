@@ -59,7 +59,9 @@ public class NotificationController {
 	public BaseResponse<List<LoadNotificationLogVo>> getAlarm(
 			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
-		String uuid = decodingToken.getUuid(accessToken);
+//		String uuid = decodingToken.getUuid(accessToken);
+
+		String uuid = "abcd";
 
 		return new BaseResponse<>(notificationUseCase.getAlarm(uuid)
 				.stream()

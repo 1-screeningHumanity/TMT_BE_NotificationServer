@@ -76,7 +76,7 @@ public class NotificationAdaptor implements SaveNotificationPort, LoadNotificati
 	@Override
 	@Transactional(readOnly = true)
 	public List<LoadNotificationLogOutDto> getNotificationLogByUuid(String uuid) {
-		return notificationLogJpaRepository.findByUuid(uuid)
+		return notificationLogJpaRepository.findByUuidOrderByNotificationLogCreateAtDesc(uuid)
 				.stream()
 				.map(notificationLogEntity -> LoadNotificationLogOutDto.builder()
 						.notificationLogId(notificationLogEntity.getId())

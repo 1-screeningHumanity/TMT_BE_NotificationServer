@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NotificationLogJpaRepository extends JpaRepository<NotificationLogEntity, Long>, NotificationLogQueryDslRepository {
 	Optional<NotificationLogEntity> findByUuidAndId(String uuid, Long id);
-	List<NotificationLogEntity> findByUuid(String uuid);
+	List<NotificationLogEntity> findByUuidOrderByNotificationLogCreateAtDesc(String uuid);
 }
