@@ -30,7 +30,7 @@ public class NotificationAdaptor implements SaveNotificationPort, LoadNotificati
 		// 이미 등록된 FCM 토큰인지 확인
 		if (notificationJpaRepository.existsByUuidAndFcmToken(
 				saveNotificationOutDto.getUuid(), saveNotificationOutDto.getFcmToken())) {
-			throw new CustomException(BaseResponseCode.ALREADY_EXIST_FCM_TOKEN);
+			return ;
 		}
 
 		notificationJpaRepository.save(NotificationEntity.toEntityFrom(saveNotificationOutDto));
