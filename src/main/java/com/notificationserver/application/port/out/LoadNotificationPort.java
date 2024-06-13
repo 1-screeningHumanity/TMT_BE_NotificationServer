@@ -8,4 +8,6 @@ public interface LoadNotificationPort {
 	List<String> getFcmTokenByUuid(String uuid);
 
 	List<LoadNotificationLogOutDto> getNotificationLogByUuid(String uuid);
+
+	long getCountByUuidAndReadStatus(String uuid, Integer readStatus);
 }

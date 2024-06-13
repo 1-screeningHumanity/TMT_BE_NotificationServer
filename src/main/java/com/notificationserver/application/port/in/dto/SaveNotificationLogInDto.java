@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class SaveNotificationLogInDto {
+	private String uuid;
 	private String title;
 	private String content;
 	private NotificationStatus notificationStatus;
@@ -19,8 +20,9 @@ public class SaveNotificationLogInDto {
 	private LocalDateTime notificationLogCreateAt;
 
 	@Builder
-	public static SaveNotificationLogInDto createNotificationLogInDto(String title, String content, LocalDateTime notificationLogCreateAt, NotificationStatus notificationStatus){
+	public static SaveNotificationLogInDto createNotificationLogInDto(String uuid, String title, String content, LocalDateTime notificationLogCreateAt, NotificationStatus notificationStatus){
 		return SaveNotificationLogInDto.builder()
+				.uuid(uuid)
 				.title(title)
 				.content(content)
 				.notificationStatus(notificationStatus)

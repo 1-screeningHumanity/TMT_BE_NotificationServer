@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 @Builder
 public class NotificationLogCountInDto {
-	private Integer notificationLogCount;
+	private long notificationLogCount;
 
-	public static NotificationLogCountInDto getCount(Integer count) {
+	public static NotificationLogCountInDto getCount(long count) {
 		return NotificationLogCountInDto.builder()
 				.notificationLogCount(count)
 				.build();

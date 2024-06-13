@@ -27,33 +27,33 @@ public class NotificationAdaptor implements SaveNotificationPort, LoadNotificati
 	@Override
 	@Transactional
 	public void saveFcmTokenByUuid(SaveNotificationOutDto saveNotificationOutDto) {
+		// 이미 등록된 FCM 토큰인지 확인
+		if (notificationJpaRepository.existsByUuidAndFcmToken(
+				saveNotificationOutDto.getUuid(), saveNotificationOutDto.getFcmToken())) {
+			return ;
+		}
+
 		notificationJpaRepository.save(NotificationEntity.toEntityFrom(saveNotificationOutDto));
 	}
 
 	@Override
 	@Transactional
-	public void saveNotificationLog(
-			String uuid,
-			String fcmToken,
-			SaveNotificationLogOutDto saveNotificationLogOutDto) {
-
-		NotificationEntity notificationEntity = notificationJpaRepository.findByUuidAndFcmToken(
-						uuid, fcmToken)
-				.orElseThrow(() -> new IllegalArgumentException("조회된 알림 정보가 없습니다."));
-
-		notificationLogJpaRepository.save(
-				NotificationLogEntity.toEntityFrom(notificationEntity, saveNotificationLogOutDto));
+	public void deleteByUuidAndFcmToken(String uuid, String fcmToken) {
+		notificationJpaRepository.deleteNotificationByUuidAndFcmToken(uuid, fcmToken);
 	}
 
 	@Override
 	@Transactional
-	public void updateNotificationLogReadStatus(
-			String uuid,
-			ReadNotificationLogOutDto dto
-	) {
+	public void saveNotificationLog(SaveNotificationLogOutDto saveNotificationLogOutDto) {
+		notificationLogJpaRepository.save(
+				NotificationLogEntity.toEntityFrom(saveNotificationLogOutDto));
+	}
 
-		NotificationLogEntity notificationLogEntity = notificationLogJpaRepository.findNotificationLogByUuidAndId(
-						uuid, dto.getNotificationId())
+	@Override
+	@Transactional
+	public void updateNotificationLogReadStatus(ReadNotificationLogOutDto dto) {
+		NotificationLogEntity notificationLogEntity = notificationLogJpaRepository.findByUuidAndId(
+						dto.getUuid(), dto.getNotificationId())
 				.orElseThrow(() -> new CustomException(
 						BaseResponseCode.NOT_UPDATE_NOTIFICATION_LOG_READ_STATUS));
 
@@ -76,7 +76,7 @@ public class NotificationAdaptor implements SaveNotificationPort, LoadNotificati
 	@Override
 	@Transactional(readOnly = true)
 	public List<LoadNotificationLogOutDto> getNotificationLogByUuid(String uuid) {
-		return notificationLogJpaRepository.findNotificationLogByUuid(uuid)
+		return notificationLogJpaRepository.findByUuidOrderByNotificationLogCreateAtDesc(uuid)
 				.stream()
 				.map(notificationLogEntity -> LoadNotificationLogOutDto.builder()
 						.notificationLogId(notificationLogEntity.getId())
@@ -87,5 +87,11 @@ public class NotificationAdaptor implements SaveNotificationPort, LoadNotificati
 						.notificationLogCreateAt(notificationLogEntity.getNotificationLogCreateAt())
 						.build())
 				.toList();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public long getCountByUuidAndReadStatus(String uuid, Integer readStatus) {
+		return notificationLogJpaRepository.getCountByUuidAndReadStatus(uuid, readStatus);
 	}
 }

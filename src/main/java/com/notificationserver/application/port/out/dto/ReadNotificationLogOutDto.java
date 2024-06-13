@@ -9,12 +9,14 @@ import lombok.Getter;
 public class ReadNotificationLogOutDto {
 	private Long notificationId;
 	private Integer readStatus;
+	private String uuid;
 
 	@Builder
-	public static ReadNotificationLogOutDto getNoticaiton(Notification notification) {
+	public static ReadNotificationLogOutDto getNotification(Notification notification) {
 		return ReadNotificationLogOutDto.builder()
 				.notificationId(notification.getNotificationLogId())
 				.readStatus(notification.getReadStatus())
+				.uuid(notification.getUuid())
 				.build();
 	}
 
