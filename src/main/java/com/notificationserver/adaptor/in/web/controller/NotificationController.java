@@ -24,12 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 @RequiredArgsConstructor
 @Slf4j
+// 주의: Gateway 로드 밸런서 설정으로 인해 @RequestMapping("/notification")이 생략되었습니다.
+// 로드 밸런서가 이 엔드포인트로의 라우팅을 처리합니다.
 public class NotificationController {
 
 	private final NotificationUseCase notificationUseCase;
 	private final DecodingToken decodingToken;
 
-	@PostMapping("/notification/fcm-token")
+	@PostMapping("/fcm-token")
 	public BaseResponse<Void> saveFcmTokenByUuid(
 			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
 			@RequestBody FcmTokenVo vo) {
@@ -41,7 +43,7 @@ public class NotificationController {
 		return new BaseResponse<>();
 	}
 
-	@PostMapping("/notification")
+	@PostMapping
 	public BaseResponse<Void> readAlarm(
 			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
 			@RequestBody NotificationIdsVo vo) {
@@ -53,7 +55,7 @@ public class NotificationController {
 		return new BaseResponse<>();
 	}
 
-	@GetMapping("/notification")
+	@GetMapping
 	public BaseResponse<List<LoadNotificationLogVo>> getAlarm(
 			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
@@ -65,7 +67,7 @@ public class NotificationController {
 				.toList());
 	}
 
-	@DeleteMapping("/notification")
+	@DeleteMapping
 	public BaseResponse<Void> deleteAlarms(
 			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
 			@RequestBody NotificationIdsVo vo) {
@@ -77,7 +79,7 @@ public class NotificationController {
 		return new BaseResponse<>();
 	}
 
-	@GetMapping("/notification/count")
+	@GetMapping("/count")
 	public BaseResponse<NotificationLogCountVo> getAlarmCount(
 			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
