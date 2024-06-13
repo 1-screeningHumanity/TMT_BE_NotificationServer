@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface NotificationQueryDslRepository {
 	List<String> findFcmTokensByUuid(String uuid);
+
+	void deleteNotificationByUuidAndFcmToken(String uuid, String fcmToken);
 }

@@ -55,6 +55,11 @@ public class NotificationService implements NotificationUseCase {
 	}
 
 	@Override
+	public void deleteFcmToken(String uuid, String fcmToken) {
+		saveNotificationPort.deleteByUuidAndFcmToken(uuid, fcmToken);
+	}
+
+	@Override
 	public void readAlarm(List<Long> notificationLogIds, String uuid) {
 		notificationLogIds.forEach(notificationLogId -> {
 

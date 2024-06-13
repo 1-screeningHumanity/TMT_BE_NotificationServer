@@ -38,6 +38,12 @@ public class NotificationAdaptor implements SaveNotificationPort, LoadNotificati
 
 	@Override
 	@Transactional
+	public void deleteByUuidAndFcmToken(String uuid, String fcmToken) {
+		notificationJpaRepository.deleteNotificationByUuidAndFcmToken(uuid, fcmToken);
+	}
+
+	@Override
+	@Transactional
 	public void saveNotificationLog(SaveNotificationLogOutDto saveNotificationLogOutDto) {
 		notificationLogJpaRepository.save(
 				NotificationLogEntity.toEntityFrom(saveNotificationLogOutDto));

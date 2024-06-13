@@ -11,6 +11,8 @@ public interface NotificationUseCase {
 
 	void saveFcmTokenByUuid(SaveNotificationInDto saveNotificationInDto);
 
+	void deleteFcmToken(String uuid, String fcmToken);
+
 	void readAlarm(List<Long> notificationLogIds, String uuid);
 
 	List<LoadNotificationLogInDto> getAlarm(String uuid);

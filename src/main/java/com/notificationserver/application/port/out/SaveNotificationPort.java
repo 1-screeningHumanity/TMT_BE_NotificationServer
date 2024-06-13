@@ -8,6 +8,8 @@ import java.util.List;
 public interface SaveNotificationPort {
 	void saveFcmTokenByUuid(SaveNotificationOutDto saveNotificationOutDto);
 
+	void deleteByUuidAndFcmToken(String uuid, String fcmToken);
+
 	void saveNotificationLog(SaveNotificationLogOutDto saveNotificationLogOutDto);
 
 	void updateNotificationLogReadStatus(ReadNotificationLogOutDto readNotificationLogOutDto);
