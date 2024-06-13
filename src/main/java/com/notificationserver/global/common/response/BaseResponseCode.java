@@ -5,18 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 /**
- * 식별 코드 범위
- * 성공 : 200 (통일)
- * 유저 에러 : 1000~1999
- * 매수/매도 에러 : 2000~2999
- * 랭킹 에러 : 3000~3999
- * 알림 : 4000~4999
- * 추가 기능 에러 :
- *      북마크 : 5000~5099
- *      구독 : 5100~5199
- *      {추가기능 발생 시} : 5200~5299
- * 차트 에러 : 6000~6999
- * 공통 에러 : 9000~9999
+ * 식별 코드 범위 성공 : 200 (통일) 유저 에러 : 1000~1999 매수/매도 에러 : 2000~2999 랭킹 에러 : 3000~3999 알림 : 4000~4999 추가
+ * 기능 에러 : 북마크 : 5000~5099 구독 : 5100~5199 {추가기능 발생 시} : 5200~5299 차트 에러 : 6000~6999 공통 에러 :
+ * 9000~9999
  */
 @Getter
 @RequiredArgsConstructor
@@ -37,10 +28,11 @@ public enum BaseResponseCode {
     METHOD_NOT_ALLOW_ERROR(HttpStatus.METHOD_NOT_ALLOWED, false, 9500, "(exception error 메세지에 따름)"),
     TOKEN_IS_EXPIRED_ERROR(HttpStatus.UNAUTHORIZED, false, 9999, "(gateway 에서 error 처리)"),
 
-    NOT_UPDATE_NOTIFICATION_LOG_READ_STATUS(HttpStatus.BAD_REQUEST, false, 4000, "알림 읽음 처리 실패");
+    NOT_UPDATE_NOTIFICATION_LOG_READ_STATUS(HttpStatus.BAD_REQUEST, false, 4000, "알림 읽음 처리 실패"),
+    ALREADY_EXIST_FCM_TOKEN(HttpStatus.BAD_REQUEST, false, 4001, "이미 등록된 FCM Token 입니다");
 
     private final HttpStatus httpStatus;
     private final boolean isSuccess;
     private final int code;
     private final String message;
-}
+    }

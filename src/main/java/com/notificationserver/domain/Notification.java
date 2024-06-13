@@ -24,6 +24,7 @@ public class Notification {
 
 	public static Notification sendAlarm(String fcmToken, SaveNotificationLogInDto dto) {
 		return Notification.builder()
+				.uuid(dto.getUuid())
 				.fcmToken(fcmToken)
 				.content(dto.getContent())
 				.title(dto.getTitle())
@@ -33,10 +34,11 @@ public class Notification {
 				.build();
 	}
 
-	public static Notification readAlarm(Long notificationLogId) {
+	public static Notification readAlarm(Long notificationLogId, String uuid) {
 		return Notification.builder()
 				.notificationLogId(notificationLogId)
 				.readStatus(77)
+				.uuid(uuid)
 				.build();
 	}
 

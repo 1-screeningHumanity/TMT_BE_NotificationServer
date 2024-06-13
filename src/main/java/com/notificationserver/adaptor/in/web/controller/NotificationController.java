@@ -88,4 +88,15 @@ public class NotificationController {
 		return new BaseResponse<>(NotificationLogCountVo.getNotificationLogInDto(
 				notificationUseCase.getAlarmCount(uuid)));
 	}
+
+	@DeleteMapping("/fcm-token")
+	public BaseResponse<Void> deleteFcmToken(
+			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+			@RequestBody FcmTokenVo vo
+	) {
+		String uuid = decodingToken.getUuid(accessToken);
+
+		notificationUseCase.deleteFcmToken(uuid, vo.getFcmToken());
+		return new BaseResponse<>();
+	}
 }

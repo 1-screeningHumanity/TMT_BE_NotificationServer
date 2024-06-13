@@ -31,9 +31,8 @@ public class NotificationLogEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "notification_entity_id")
-	private NotificationEntity notification;
+	@Column(name = "uuid", nullable = false)
+	private String uuid;
 
 	@Column(name = "title", nullable = false)
 	private String title;
@@ -51,10 +50,9 @@ public class NotificationLogEntity {
 	@Column(name = "notification_log_create_at", nullable = false)
 	private LocalDateTime notificationLogCreateAt;
 
-	public static NotificationLogEntity toEntityFrom(
-			NotificationEntity notificationEntity,SaveNotificationLogOutDto saveNotificationLogOutDto) {
+	public static NotificationLogEntity toEntityFrom(SaveNotificationLogOutDto saveNotificationLogOutDto) {
 		return NotificationLogEntity.builder()
-				.notification(notificationEntity)
+				.uuid(saveNotificationLogOutDto.getUuid())
 				.title(saveNotificationLogOutDto.getTitle())
 				.content(saveNotificationLogOutDto.getContent())
 				.notificationStatus(saveNotificationLogOutDto.getNotificationStatus())
@@ -66,7 +64,7 @@ public class NotificationLogEntity {
 	public static NotificationLogEntity updateReadStatus(NotificationLogEntity notificationLogEntity, Integer readStatus) {
 		return NotificationLogEntity.builder()
 				.id(notificationLogEntity.getId())
-				.notification(notificationLogEntity.getNotification())
+				.uuid(notificationLogEntity.getUuid())
 				.title(notificationLogEntity.getTitle())
 				.content(notificationLogEntity.getContent())
 				.notificationStatus(notificationLogEntity.getNotificationStatus())
