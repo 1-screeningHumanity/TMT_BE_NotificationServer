@@ -26,6 +26,7 @@ public class  DecodingToken {
     private Claims decodeJWT(String jwt) {
 
         if (jwt == null || !jwt.startsWith(START_BEARER)) {
+            log.error("jwt = {} ", jwt);
             log.error("Token 형식 오류, 확인 필요");
             return null;
         }
