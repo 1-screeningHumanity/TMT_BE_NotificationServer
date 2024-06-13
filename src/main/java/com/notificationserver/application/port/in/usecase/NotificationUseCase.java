@@ -7,7 +7,7 @@ import com.notificationserver.application.port.in.dto.SaveNotificationLogInDto;
 import java.util.List;
 
 public interface NotificationUseCase {
-	void sendAlarm(String uuid, SaveNotificationLogInDto saveNotificationLogInDto);
+	void sendAlarm(SaveNotificationLogInDto saveNotificationLogInDto);
 
 	void saveFcmTokenByUuid(SaveNotificationInDto saveNotificationInDto);
 

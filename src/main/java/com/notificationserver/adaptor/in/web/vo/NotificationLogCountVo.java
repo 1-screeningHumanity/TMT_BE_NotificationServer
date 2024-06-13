@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NotificationLogCountVo {
 
-	private Integer notificationLogCount;
+	private long notificationLogCount;
 
 	public static NotificationLogCountVo getNotificationLogInDto(NotificationLogCountInDto dto) {
 		return NotificationLogCountVo.builder()

@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class SaveNotificationLogOutDto {
-	private String fcmToken;
+	private String uuid;
 	private String title;
 	private String content;
 	private NotificationStatus notificationStatus;
@@ -19,7 +19,7 @@ public class SaveNotificationLogOutDto {
 	public static SaveNotificationLogOutDto getNotification(
 			Notification notification) {
 		return SaveNotificationLogOutDto.builder()
-				.fcmToken(notification.getFcmToken())
+				.uuid(notification.getUuid())
 				.title(notification.getTitle())
 				.content(notification.getContent())
 				.notificationStatus(notification.getNotificationStatus())

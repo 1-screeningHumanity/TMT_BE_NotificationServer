@@ -29,15 +29,14 @@ public class NotificationListener {
 			NotificationInfoVo vo = mapper.readValue(kafkaMessage, new TypeReference<>() {
 			});
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
-					"yyyy-MM-dd'T'HH:mm:ss.nnnnnnnnn");
+			DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
 			LocalDateTime notificationLogTime = LocalDateTime.parse(vo.getNotificationLogTime(),
 					formatter);
 
 			notificationUseCase.sendAlarm(
-					vo.getUuid(),
 					SaveNotificationLogInDto.createNotificationLogInDto(
+							vo.getUuid(),
 							vo.getTitle(),
 							vo.getBody(),
 							notificationLogTime,

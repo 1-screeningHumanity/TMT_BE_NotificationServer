@@ -8,9 +8,9 @@ import java.util.List;
 public interface SaveNotificationPort {
 	void saveFcmTokenByUuid(SaveNotificationOutDto saveNotificationOutDto);
 
-	void saveNotificationLog(String uuid,String fcmToken, SaveNotificationLogOutDto saveNotificationLogOutDto);
+	void saveNotificationLog(SaveNotificationLogOutDto saveNotificationLogOutDto);
 
-	void updateNotificationLogReadStatus(String uuid, ReadNotificationLogOutDto readNotificationLogOutDto);
+	void updateNotificationLogReadStatus(ReadNotificationLogOutDto readNotificationLogOutDto);
 
 	void deleteNotificationLogsByIdsAndUuid(List<Long> notificationLogIds, String uuid);
 }

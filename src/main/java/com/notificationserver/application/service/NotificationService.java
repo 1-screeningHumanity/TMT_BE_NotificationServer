@@ -25,15 +25,23 @@ public class NotificationService implements NotificationUseCase {
 	private final SaveNotificationPort saveNotificationPort;
 	private final LoadNotificationPort loadNotificationPort;
 	private final FirebaseMessaging firebaseMessaging;
+	private static final String FCM_EMPTY = "";
 
 	@Override
-	public void sendAlarm(String uuid, SaveNotificationLogInDto saveNotificationLogInDto) {
-		List<String> fcmTokens = loadNotificationPort.getFcmTokenByUuid(uuid);
+	public void sendAlarm(SaveNotificationLogInDto dto) {
+		List<String> fcmTokens = loadNotificationPort.getFcmTokenByUuid(dto.getUuid());
+
+		// fcm 토큰이 없는 회원은 fcm 전송은 하지 않지만 알림 로그는 저장
+		if (fcmTokens.isEmpty()) {
+			Notification notification = Notification.sendAlarm(FCM_EMPTY, dto);
+			saveNotificationPort.saveNotificationLog(
+					SaveNotificationLogOutDto.getNotification(notification));
+			return;
+		}
 
 		fcmTokens.forEach(fcmToken -> {
-			Notification notification = Notification.sendAlarm(fcmToken, saveNotificationLogInDto);
-
-			saveNotificationPort.saveNotificationLog(uuid, fcmToken,
+			Notification notification = Notification.sendAlarm(fcmToken, dto);
+			saveNotificationPort.saveNotificationLog(
 					SaveNotificationLogOutDto.getNotification(notification));
 
 			sendNotificationByFcmToken(notification);
@@ -50,10 +58,10 @@ public class NotificationService implements NotificationUseCase {
 	public void readAlarm(List<Long> notificationLogIds, String uuid) {
 		notificationLogIds.forEach(notificationLogId -> {
 
-			Notification notification = Notification.readAlarm(notificationLogId);
+			Notification notification = Notification.readAlarm(notificationLogId, uuid);
 
-			saveNotificationPort.updateNotificationLogReadStatus(uuid,
-					ReadNotificationLogOutDto.getNoticaiton(notification));
+			saveNotificationPort.updateNotificationLogReadStatus(
+					ReadNotificationLogOutDto.getNotification(notification));
 		});
 	}
 
@@ -69,7 +77,7 @@ public class NotificationService implements NotificationUseCase {
 	@Override
 	public NotificationLogCountInDto getAlarmCount(String uuid) {
 		return NotificationLogCountInDto.getCount(
-				loadNotificationPort.getNotificationLogByUuid(uuid).size());
+				loadNotificationPort.getCountByUuidAndReadStatus(uuid, 44));
 	}
 
 	@Override
