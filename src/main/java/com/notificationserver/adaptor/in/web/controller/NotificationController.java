@@ -59,9 +59,7 @@ public class NotificationController {
 	public BaseResponse<List<LoadNotificationLogVo>> getAlarm(
 			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
 
-//		String uuid = decodingToken.getUuid(accessToken);
-
-		String uuid = "abcd";
+		String uuid = decodingToken.getUuid(accessToken);
 
 		return new BaseResponse<>(notificationUseCase.getAlarm(uuid)
 				.stream()
@@ -96,9 +94,8 @@ public class NotificationController {
 			@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
 			@RequestBody FcmTokenVo vo
 	) {
-//		String uuid = decodingToken.getUuid(accessToken);
+		String uuid = decodingToken.getUuid(accessToken);
 
-		String uuid = "abcd";
 		notificationUseCase.deleteFcmToken(uuid, vo.getFcmToken());
 		return new BaseResponse<>();
 	}
