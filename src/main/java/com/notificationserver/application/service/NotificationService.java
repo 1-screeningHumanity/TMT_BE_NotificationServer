@@ -1,14 +1,13 @@
 package com.notificationserver.application.service;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
 import com.notificationserver.application.port.in.dto.LoadNotificationLogInDto;
 import com.notificationserver.application.port.in.dto.NotificationLogCountInDto;
 import com.notificationserver.application.port.in.dto.SaveNotificationInDto;
 import com.notificationserver.application.port.in.dto.SaveNotificationLogInDto;
 import com.notificationserver.application.port.in.usecase.NotificationUseCase;
 import com.notificationserver.application.port.out.LoadNotificationPort;
+import com.notificationserver.application.port.out.dto.NotificationSendOutDto;
+import com.notificationserver.application.port.out.NotificationSendPort;
 import com.notificationserver.application.port.out.SaveNotificationPort;
 import com.notificationserver.application.port.out.dto.ReadNotificationLogOutDto;
 import com.notificationserver.application.port.out.dto.SaveNotificationLogOutDto;
@@ -24,7 +23,7 @@ public class NotificationService implements NotificationUseCase {
 
 	private final SaveNotificationPort saveNotificationPort;
 	private final LoadNotificationPort loadNotificationPort;
-	private final FirebaseMessaging firebaseMessaging;
+	private final NotificationSendPort notificationSendPort;
 	private static final String FCM_EMPTY = "";
 
 	@Override
@@ -44,7 +43,9 @@ public class NotificationService implements NotificationUseCase {
 			saveNotificationPort.saveNotificationLog(
 					SaveNotificationLogOutDto.getNotification(notification));
 
-			sendNotificationByFcmToken(notification);
+			// 알림 메시지 전송
+			notificationSendPort.sendNotification(
+					NotificationSendOutDto.getNotification(notification));
 		});
 	}
 
@@ -89,25 +90,5 @@ public class NotificationService implements NotificationUseCase {
 	public void deleteAlarms(List<Long> notificationLogIds, String uuid) {
 		saveNotificationPort.deleteNotificationLogsByIdsAndUuid(
 				Notification.deleteAlarms(notificationLogIds), uuid);
-	}
-
-
-	// fcm 으로 알림 보내기
-	private void sendNotificationByFcmToken(Notification notification) {
-		com.google.firebase.messaging.Notification fireBaseNotification = com.google.firebase.messaging.Notification.builder()
-				.setTitle(notification.getTitle())
-				.setBody(notification.getContent())
-				.build();
-
-		Message message = Message.builder()
-				.setToken(notification.getFcmToken())
-				.setNotification(fireBaseNotification)
-				.build();
-
-		try {
-			firebaseMessaging.send(message);
-		} catch (FirebaseMessagingException e) {
-			throw new RuntimeException(e);
-		}
 	}
 }
