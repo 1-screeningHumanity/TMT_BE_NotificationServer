@@ -13,7 +13,6 @@ import lombok.Getter;
 public class Notification {
 
 	private Long notificationLogId;
-	private String fcmToken;
 	private String uuid;
 	private LocalDateTime notificationCreateAt;
 	private String content;
@@ -22,10 +21,9 @@ public class Notification {
 	private Integer readStatus;
 	private LocalDateTime notificationLogCreateAt;
 
-	public static Notification sendAlarm(String fcmToken, SaveNotificationLogInDto dto) {
+	public static Notification sendAlarm(SaveNotificationLogInDto dto) {
 		return Notification.builder()
 				.uuid(dto.getUuid())
-				.fcmToken(fcmToken)
 				.content(dto.getContent())
 				.title(dto.getTitle())
 				.readStatus(dto.getReadStatus())
