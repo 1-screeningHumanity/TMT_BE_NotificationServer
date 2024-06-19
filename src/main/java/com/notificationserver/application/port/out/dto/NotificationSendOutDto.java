@@ -17,9 +17,9 @@ public class NotificationSendOutDto {
 		this.content = content;
 	}
 
-	public static NotificationSendOutDto getNotification(Notification notification) {
+	public static NotificationSendOutDto getNotification(Notification notification, String fcmToken) {
 		return NotificationSendOutDto.builder()
-				.fcmToken(notification.getFcmToken())
+				.fcmToken(fcmToken)
 				.title(notification.getTitle())
 				.content(notification.getContent())
 				.build();
