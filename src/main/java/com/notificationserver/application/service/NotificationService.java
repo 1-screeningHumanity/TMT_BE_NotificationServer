@@ -24,29 +24,15 @@ public class NotificationService implements NotificationUseCase {
 	private final SaveNotificationPort saveNotificationPort;
 	private final LoadNotificationPort loadNotificationPort;
 	private final NotificationSendPort notificationSendPort;
-	private static final String FCM_EMPTY = "";
+
 
 	@Override
 	public void sendAlarm(SaveNotificationLogInDto dto) {
 		List<String> fcmTokens = loadNotificationPort.getFcmTokenByUuid(dto.getUuid());
 
-		// fcm 토큰이 없는 회원은 fcm 전송은 하지 않지만 알림 로그는 저장
-		if (fcmTokens.isEmpty()) {
-			Notification notification = Notification.sendAlarm(FCM_EMPTY, dto);
-			saveNotificationPort.saveNotificationLog(
-					SaveNotificationLogOutDto.getNotification(notification));
-			return;
-		}
+		Notification notification = Notification.sendAlarm(dto);
 
-		fcmTokens.forEach(fcmToken -> {
-			Notification notification = Notification.sendAlarm(fcmToken, dto);
-			saveNotificationPort.saveNotificationLog(
-					SaveNotificationLogOutDto.getNotification(notification));
-
-			// 알림 메시지 전송
-			notificationSendPort.sendNotification(
-					NotificationSendOutDto.getNotification(notification));
-		});
+		saveAndSendAlarm(notification, fcmTokens);
 	}
 
 	@Override
@@ -90,5 +76,18 @@ public class NotificationService implements NotificationUseCase {
 	public void deleteAlarms(List<Long> notificationLogIds, String uuid) {
 		saveNotificationPort.deleteNotificationLogsByIdsAndUuid(
 				Notification.deleteAlarms(notificationLogIds), uuid);
+	}
+
+	private void saveAndSendAlarm(Notification notification, List<String> fcmTokens) {
+		// fcm 관계 없이 알림 로그 저장
+		saveNotificationPort.saveNotificationLog(
+				SaveNotificationLogOutDto.getNotification(notification));
+
+		// fcm token이 있는 경우 알림 메시지 전송
+		fcmTokens.forEach(fcmToken -> {
+			// 알림 메시지 전송
+			notificationSendPort.sendNotification(
+					NotificationSendOutDto.getNotification(notification, fcmToken));
+		});
 	}
 }
