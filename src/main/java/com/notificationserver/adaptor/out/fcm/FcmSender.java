@@ -6,8 +6,10 @@ import com.google.firebase.messaging.Message;
 import com.notificationserver.application.port.out.dto.NotificationSendOutDto;
 import com.notificationserver.application.port.out.NotificationSendPort;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class FcmSender implements NotificationSendPort {
@@ -28,8 +30,8 @@ public class FcmSender implements NotificationSendPort {
 
 		try {
 			firebaseMessaging.send(message);
-		} catch (FirebaseMessagingException e) {
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+			log.error(e.getMessage());
 		}
 	}
 }
